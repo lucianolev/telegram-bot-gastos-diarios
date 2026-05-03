@@ -39,8 +39,14 @@ def webhook_handler(request):
 
     # 2. Procesamos mensajes entrantes de Telegram
     if request.method == 'POST':
-        update = telebot.types.Update.de_json(request.get_json(force=True))
+        # Log para saber que entró un POST
+        print("--- NUEVO POST RECIBIDO DESDE TELEGRAM ---")
+        json_string = flask.request.get_json(force=True)
+        print(f"Contenido del JSON: {json_string}")
+
+        update = telebot.types.Update.de_json(json_string)
         if update.message:
+            print(f"Mensaje detectado: {update.message.text}")
             procesar_mensaje(update.message)
         return "OK", 200
     
@@ -49,6 +55,7 @@ def webhook_handler(request):
 def procesar_mensaje(msg):
     # Seguridad: Solo procesar mensajes que vengan del grupo de Gastos
     if msg.chat.id != GRUPO_GASTOS_ID:
+        print(f"Ignorando mensaje de chat desconocido: {msg.chat.id}")
         return
 
     texto = msg.text.strip() if msg.text else ""
