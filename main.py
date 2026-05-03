@@ -16,8 +16,8 @@ def index():
 # Reemplazá estos valores con tus datos reales
 API_TOKEN = environ.get('TELEGRAM_API_TOKEN')
 SPREADSHEET_ID = environ.get('DATA_SPREADSHEET_ID')
-GRUPO_GASTOS_ID = environ.get('GRUPO_TELEGRAM_ID')
-LIMITE_DIARIO_OBJETIVO = environ.get('LIMITE_DIARIO_OBJETIVO')
+GRUPO_GASTOS_ID = int(environ.get('GRUPO_TELEGRAM_ID'))
+LIMITE_DIARIO_OBJETIVO = int(environ.get('LIMITE_DIARIO_OBJETIVO'))
 
 # Autenticación con Google Sheets
 SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
