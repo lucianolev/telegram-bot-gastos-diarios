@@ -1,0 +1,5 @@
+pyTelegramBotAPI
+google-auth
+google-api-python-client
+flask
+gunicorn
