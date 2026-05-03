@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import environ
+from zoneinfo import ZoneInfo
 
 import flask
 import google.auth
@@ -26,6 +27,11 @@ service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 bot = telebot.TeleBot(API_TOKEN)
+ARGENTINA_TZ = ZoneInfo("America/Argentina/Buenos_Aires")
+
+
+def ahora_argentina():
+    return datetime.now(ARGENTINA_TZ)
 
 def webhook_handler(request):
     """
@@ -79,7 +85,7 @@ def procesar_mensaje(msg):
         pass
 
 def registrar_gasto_en_sheet(monto, usuario):
-    fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    fecha_hora = ahora_argentina().strftime('%Y-%m-%d %H:%M:%S')
     valores = [[fecha_hora, usuario, monto]]
     body = {'values': valores}
     
@@ -101,7 +107,7 @@ def enviar_reporte_diario():
         return
 
     datos = rows[1:] # Ignorar encabezados
-    hoy_str = datetime.now().strftime('%Y-%m-%d')
+    hoy_str = ahora_argentina().strftime('%Y-%m-%d')
     
     total_hoy = 0
     total_ciclo = 0
